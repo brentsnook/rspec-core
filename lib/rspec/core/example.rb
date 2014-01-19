@@ -56,6 +56,11 @@ module RSpec
         RSpec.configuration.format_docstrings_block.call(description)
       end
 
+      # Returns the source location of the block passed to this spec.
+      def source_location
+        @example_block.source_location
+      end
+
       # @attr_reader
       #
       # Returns the first exception raised in the context of running this

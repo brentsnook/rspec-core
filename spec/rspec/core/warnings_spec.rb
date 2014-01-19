@@ -26,4 +26,11 @@ RSpec.describe "rspec warnings and deprecations" do
     end
   end
 
+  describe "#warn_with" do
+    it "adds the source location of spec if the call site is nil" do
+      line = __LINE__ - 1
+      expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{__FILE__}:#{line}`.")
+      RSpec.warn_with("The warning.", :call_site => nil)
+    end
+  end
 end

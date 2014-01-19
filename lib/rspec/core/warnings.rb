@@ -1,3 +1,5 @@
+require "rspec/support/warnings"
+
 module RSpec
 
   # @private
@@ -19,4 +21,13 @@ module RSpec
     RSpec.configuration.reporter.deprecation :message => message
   end
 
+  @orig_warn_with = method(:warn_with)
+
+  def self.warn_with(message, options = {})
+    if options.fetch(:call_site, :not_present).nil?
+      message << " Warning generated from spec at `#{RSpec.current_example.source_location.join(":")}`."
+    end
+
+    @orig_warn_with.call(message, options)
+  end
 end
