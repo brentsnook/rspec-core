@@ -29,7 +29,7 @@ module RSpec
           if RSpec.current_example.nil?
             message << " RSpec could not determine which call generated this warning."
           else
-            message << " Warning generated from spec at `#{RSpec.current_example.source_location.join(":")}`."
+            message << " Warning generated from spec at `#{RSpec.current_example.location}`."
           end
         end
 

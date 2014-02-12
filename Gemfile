@@ -2,12 +2,21 @@ source "https://rubygems.org"
 
 gemspec
 
-%w[rspec rspec-expectations rspec-mocks rspec-support].each do |lib|
+%w[rspec rspec-expectations rspec-mocks].each do |lib|
   library_path = File.expand_path("../../#{lib}", __FILE__)
   if File.exist?(library_path) && !ENV['USE_GIT_REPOS']
     gem lib, :path => library_path
   else
     gem lib, :git => "git://github.com/rspec/#{lib}.git"
+  end
+end
+
+%w[rspec-support].each do |lib|
+  library_path = File.expand_path("../../#{lib}", __FILE__)
+  if File.exist?(library_path) && !ENV['USE_GIT_REPOS']
+    gem lib, :path => library_path
+  else
+    gem lib, :git => "git://github.com/bestie/#{lib}.git", :branch => "warnings-module"
   end
 end
 

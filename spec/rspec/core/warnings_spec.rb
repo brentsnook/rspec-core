@@ -33,7 +33,8 @@ RSpec.describe "rspec warnings and deprecations" do
 
       it "adds the source location of spec" do
         line = __LINE__ - 1
-        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{__FILE__}:#{line}`.")
+        file_path = RSpec::Core::Metadata.relative_path(__FILE__)
+        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{file_path}:#{line}`.")
 
         RSpec.warn_with("The warning.", options)
       end
