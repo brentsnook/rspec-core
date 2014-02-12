@@ -14,7 +14,10 @@ if is_mri; then
   clone_repo "rspec-mocks"
 
   if rspec_support_compatible; then
-    clone_repo "rspec-support"
+    #Done so that testing core against the support branch can happen
+    #This will get reverted once we've merged support and everything
+    #Is green.
+    travis_retry git clone git://github.com/bestie/rspec-support --depth 1 --branch warnings-module
   fi
 
   popd
