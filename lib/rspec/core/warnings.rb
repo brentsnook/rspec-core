@@ -3,8 +3,6 @@ require "rspec/support/warnings"
 module RSpec
   module Core
     module Warnings
-      extend self
-
       # @private
       #
       # Used internally to print deprecation warnings

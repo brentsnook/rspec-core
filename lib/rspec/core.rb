@@ -14,9 +14,6 @@ require 'rbconfig'
 
 require_rspec['core/version']
 
-# Require this so that support's warnings are included on RSpec.
-require 'rspec/support'
-
 require 'rspec/support/caller_filter'
 require 'rspec/core/warnings'
 

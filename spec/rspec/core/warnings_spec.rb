@@ -44,7 +44,7 @@ RSpec.describe "rspec warnings and deprecations" do
           allow(RSpec).to receive(:current_example).and_return(nil)
         end
 
-        it "Tells the user it was unable to determine the cause of the warning" do
+        it "tells the user it was unable to determine the cause of the warning" do
           expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
 
           RSpec.warn_with("The warning.", options)
