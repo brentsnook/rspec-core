@@ -1,33 +1,40 @@
 require "rspec/support/warnings"
 
 module RSpec
+  module Core
+    module Warnings
+      extend self
 
-  # @private
-  #
-  # Used internally to print deprecation warnings
-  def self.deprecate(deprecated, data = {})
-    RSpec.configuration.reporter.deprecation(
-      {
-        :deprecated => deprecated,
-        :call_site => CallerFilter.first_non_rspec_line
-      }.merge(data)
-    )
-  end
+      # @private
+      #
+      # Used internally to print deprecation warnings
+      def deprecate(deprecated, data = {})
+        RSpec.configuration.reporter.deprecation(
+          {
+            :deprecated => deprecated,
+            :call_site => CallerFilter.first_non_rspec_line
+          }.merge(data)
+        )
+      end
 
-  # @private
-  #
-  # Used internally to print deprecation warnings
-  def self.warn_deprecation(message)
-    RSpec.configuration.reporter.deprecation :message => message
-  end
+      # @private
+      #
+      # Used internally to print deprecation warnings
+      def warn_deprecation(message)
+        RSpec.configuration.reporter.deprecation :message => message
+      end
 
-  @orig_warn_with = method(:warn_with)
+      def warn_with(message, options = {})
+        if options.fetch(:call_site, :not_present).nil?
+          if RSpec.current_example.nil?
+            message << " RSpec could not determine which call generated this warning."
+          else
+            message << " Warning generated from spec at `#{RSpec.current_example.source_location.join(":")}`."
+          end
+        end
 
-  def self.warn_with(message, options = {})
-    if options.fetch(:call_site, :not_present).nil?
-      message << " Warning generated from spec at `#{RSpec.current_example.source_location.join(":")}`."
+        super(message, options)
+      end
     end
-
-    @orig_warn_with.call(message, options)
   end
 end

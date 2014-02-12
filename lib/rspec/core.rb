@@ -14,6 +14,9 @@ require 'rbconfig'
 
 require_rspec['core/version']
 
+# Require this so that support's warnings are included on RSpec.
+require 'rspec/support'
+
 require 'rspec/support/caller_filter'
 require 'rspec/core/warnings'
 
@@ -43,6 +46,8 @@ require_rspec['core/example_group']
 
 module RSpec
   autoload :SharedContext, 'rspec/core/shared_context'
+
+  extend RSpec::Core::Warnings
 
   # @private
   def self.wants_to_quit

@@ -27,10 +27,28 @@ RSpec.describe "rspec warnings and deprecations" do
   end
 
   describe "#warn_with" do
-    it "adds the source location of spec if the call site is nil" do
-      line = __LINE__ - 1
-      expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{__FILE__}:#{line}`.")
-      RSpec.warn_with("The warning.", :call_site => nil)
+    context "explicit nil call site" do
+
+      let(:options) { { :call_site => nil } }
+
+      it "adds the source location of spec" do
+        line = __LINE__ - 1
+        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{__FILE__}:#{line}`.")
+
+        RSpec.warn_with("The warning.", options)
+      end
+
+      context "when there is no current example" do
+        before do
+          allow(RSpec).to receive(:current_example).and_return(nil)
+        end
+
+        it "Tells the user it was unable to determine the cause of the warning" do
+          expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
+
+          RSpec.warn_with("The warning.", options)
+        end
+      end
     end
   end
 end
