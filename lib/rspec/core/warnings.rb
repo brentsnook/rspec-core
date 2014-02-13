@@ -24,6 +24,10 @@ module RSpec
 
       def warn_with(message, options = {})
         if options.fetch(:call_site, :not_present).nil?
+          if message[-1] != "."
+            message = message + "."
+          end
+
           if RSpec.current_example.nil?
             message << " RSpec could not determine which call generated this warning."
           else

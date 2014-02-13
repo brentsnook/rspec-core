@@ -28,7 +28,6 @@ RSpec.describe "rspec warnings and deprecations" do
 
   describe "#warn_with" do
     context "explicit nil call site" do
-
       let(:options) { { :call_site => nil } }
 
       it "adds the source location of spec" do
@@ -37,6 +36,14 @@ RSpec.describe "rspec warnings and deprecations" do
         expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{file_path}:#{line}`.")
 
         RSpec.warn_with("The warning.", options)
+      end
+
+      it "appends a period to the supplied message if one is not present" do
+        line = __LINE__ - 1
+        file_path = RSpec::Core::Metadata.relative_path(__FILE__)
+        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{file_path}:#{line}`.")
+
+        RSpec.warn_with("The warning", options)
       end
 
       context "when there is no current example" do
@@ -48,6 +55,12 @@ RSpec.describe "rspec warnings and deprecations" do
           expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
 
           RSpec.warn_with("The warning.", options)
+        end
+
+        it "appends the period to the supplied message if one is not present" do
+          expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
+
+          RSpec.warn_with("The warning", options)
         end
       end
     end
