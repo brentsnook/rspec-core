@@ -24,9 +24,7 @@ module RSpec
 
       def warn_with(message, options = {})
         if options.fetch(:spec_location, false)
-          if message.chars.to_a.last != "."
-            message = message + "."
-          end
+          message = message + "." unless message.end_with?(".")
 
           if RSpec.current_example.nil?
             message << " RSpec could not determine which call generated this warning."
