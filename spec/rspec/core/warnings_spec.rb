@@ -27,13 +27,13 @@ RSpec.describe "rspec warnings and deprecations" do
   end
 
   describe "#warn_with" do
-    context "explicit nil call site" do
-      let(:options) { { :call_site => nil } }
+    context "show spec source location" do
+      let(:options) { { :spec_location => true } }
 
       it "adds the source location of spec" do
         line = __LINE__ - 1
         file_path = RSpec::Core::Metadata.relative_path(__FILE__)
-        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{file_path}:#{line}`.")
+        expect(Kernel).to receive(:warn).with(/The warning. Warning generated from spec at `#{file_path}:#{line}`./)
 
         RSpec.warn_with("The warning.", options)
       end
@@ -41,7 +41,7 @@ RSpec.describe "rspec warnings and deprecations" do
       it "appends a period to the supplied message if one is not present" do
         line = __LINE__ - 1
         file_path = RSpec::Core::Metadata.relative_path(__FILE__)
-        expect(Kernel).to receive(:warn).with("The warning. Warning generated from spec at `#{file_path}:#{line}`.")
+        expect(Kernel).to receive(:warn).with(/The warning. Warning generated from spec at `#{file_path}:#{line}`./)
 
         RSpec.warn_with("The warning", options)
       end
@@ -52,13 +52,13 @@ RSpec.describe "rspec warnings and deprecations" do
         end
 
         it "tells the user it was unable to determine the cause of the warning" do
-          expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
+          expect(Kernel).to receive(:warn).with(/The warning. RSpec could not determine which call generated this warning./)
 
           RSpec.warn_with("The warning.", options)
         end
 
         it "appends the period to the supplied message if one is not present" do
-          expect(Kernel).to receive(:warn).with("The warning. RSpec could not determine which call generated this warning.")
+          expect(Kernel).to receive(:warn).with(/The warning. RSpec could not determine which call generated this warning./)
 
           RSpec.warn_with("The warning", options)
         end

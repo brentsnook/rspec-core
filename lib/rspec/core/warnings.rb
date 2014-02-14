@@ -23,7 +23,7 @@ module RSpec
       end
 
       def warn_with(message, options = {})
-        if options.fetch(:call_site, :not_present).nil?
+        if options.fetch(:spec_location, false)
           if message.chars.to_a.last != "."
             message = message + "."
           end
