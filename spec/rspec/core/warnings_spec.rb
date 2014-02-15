@@ -27,8 +27,13 @@ RSpec.describe "rspec warnings and deprecations" do
   end
 
   describe "#warn_with" do
-    context "show spec source location" do
-      let(:options) { { :spec_location => true } }
+    context "when :use_spec_location_as_call_site => true is passed" do
+      let(:options) {
+        {
+          :use_spec_location_as_call_site => true,
+          :call_site     => nil,
+        }
+      }
 
       it "adds the source location of spec" do
         line = __LINE__ - 1
@@ -51,16 +56,10 @@ RSpec.describe "rspec warnings and deprecations" do
           allow(RSpec).to receive(:current_example).and_return(nil)
         end
 
-        it "tells the user it was unable to determine the cause of the warning" do
-          expect(Kernel).to receive(:warn).with(/The warning. RSpec could not determine which call generated this warning./)
+        it "adds no message about the spec location" do
+          expect(Kernel).to receive(:warn).with(/The warning\.$/)
 
           RSpec.warn_with("The warning.", options)
-        end
-
-        it "appends the period to the supplied message if one is not present" do
-          expect(Kernel).to receive(:warn).with(/The warning. RSpec could not determine which call generated this warning./)
-
-          RSpec.warn_with("The warning", options)
         end
       end
     end

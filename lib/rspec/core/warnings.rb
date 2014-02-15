@@ -23,12 +23,10 @@ module RSpec
       end
 
       def warn_with(message, options = {})
-        if options.fetch(:spec_location, false)
+        if options[:use_spec_location_as_call_site]
           message = message + "." unless message.end_with?(".")
 
-          if RSpec.current_example.nil?
-            message << " RSpec could not determine which call generated this warning."
-          else
+          if RSpec.current_example
             message << " Warning generated from spec at `#{RSpec.current_example.location}`."
           end
         end
