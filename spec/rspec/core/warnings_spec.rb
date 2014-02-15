@@ -31,7 +31,7 @@ RSpec.describe "rspec warnings and deprecations" do
       let(:options) {
         {
           :use_spec_location_as_call_site => true,
-          :call_site     => nil,
+          :call_site                      => nil,
         }
       }
 
